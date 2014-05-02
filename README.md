@@ -7,8 +7,9 @@ BTUL (pronounced 'beetle') is a lightweight library for doing computational math
 
 THIS IS NOT A GENERIC UNIT FRAMEWORK!!!  It is a framework for representing physical quantities which can be expressed in terms of the seven fundamental base quantities defined by SI.  If you need to express quantities in terms of farthings or numbers of oranges, this is not the tool for you.
 
+Note also that this library makes use of the user-defined literals feature of c++11, in addition to various other new features.  Keep in mind that not all compilers may support this, and you may need to set certain compiler variables in order to use the latest standard.
+
 Roadmap:
-* Upload the code.
 * Add gtest.h and provide reasonable test cases for existing code.
 * Add benchmarking code to compare computations with physical units to computations with raw doubles/long doubles.
 * Separation of concerns - move code into multiple header files / namespaces.
