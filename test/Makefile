@@ -18,7 +18,7 @@ SRC_DIR = ../src
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.
-CPPFLAGS += -isystem $(GTEST_DIR)/include -I$(SRC_DIR)
+CPPFLAGS += -isystem $(GTEST_DIR)/include -I$(SRC_DIR) -I$(TEST_DIR)
 
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g -Wall -Wextra -pthread -std=c++11
@@ -31,6 +31,9 @@ TESTS = btul_test
 # definition.
 GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
                 $(GTEST_DIR)/include/gtest/internal/*.h
+
+# Our own additional test headers.
+TEST_HEADERS = $(TEST_DIR)/*.h
 
 # House-keeping build targets.
 
@@ -67,7 +70,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 # so we link against gtest_main.a.
 
 btul_test.o : $(TEST_DIR)/btul_test.cpp \
-                     $(SRC_DIR)/btul.h $(GTEST_HEADERS)
+                     $(SRC_DIR)/btul.h $(GTEST_HEADERS) $(TEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $(TEST_DIR)/btul_test.cpp
 
 btul_test : btul_test.o gtest_main.a
