@@ -21,21 +21,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 #include <gtest/gtest.h>
-#include <btul.h>
-#include <BaseTestCases.h>
-#include <ostream>
 
+#ifndef BASE_TEST_CASES_H
+#define BASE_TEST_CASES_H 
 
-typedef OutputStreamTest HelloTest;
+/// Base class for testing streamed output.
+/// Simply asserts that the text inserted into
+/// the \a result stream is the same as the
+/// expected variable.
+///
+/// \code
+/// typedef OutputStreamTest ExampleTest;
+///
+/// TEST_F(OutputStreamTest, test00_HelloWorld) {
+/// 	expected = "Hello World!";
+///	result << "Hello World!";
+/// }
+/// \endcode
+class OutputStreamTest : public testing::Test {
+public:
+	virtual void TearDown() {
+		ASSERT_EQ(expected, result.str());
+	}
 
-TEST_F(HelloTest, test00_pass) {
-	expected = "Hello!";
-	result << "Hello!";
-}
+	std::string expected;
+	std::ostringstream result;
+};
 
-TEST(ValueTests, test00_meters) {
-	double expected = 10.0;
-	Length actual = 10.0_m;
-	ASSERT_EQ(expected, actual.value);
-}
+#endif // BASE_TEST_CASES_H
 
