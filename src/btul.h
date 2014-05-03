@@ -315,7 +315,7 @@ public:
 
 	template <int x>
 	constexpr Quantity<BASE_QUANTITIES_MUL(x), POW_TYPE(Number, int)>
-	operator [](Power<x> p) {
+	operator [](Power<x>) {
 		return Quantity<BASE_QUANTITIES_MUL(x),
 				POW_TYPE(Number, int)>
 		       (std::pow(value, x));
