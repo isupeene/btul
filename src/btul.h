@@ -56,15 +56,6 @@ DEFINE_POWERS(7);
 DEFINE_POWERS(8);
 DEFINE_POWERS(9);
 
-#define BASE_QUANTITIES_DEFAULT_DECLARATION	\
-	int Length = 0,				\
-	int Mass = 0,				\
-	int Time = 0,				\
-	int Current = 0,			\
-	int Temperature = 0,			\
-	int Amount = 0,				\
-	int Luminosity = 0
-
 #define BASE_QUANTITIES_DECLARATION	\
 	int Length,			\
 	int Mass,			\
@@ -178,7 +169,7 @@ namespace detail {
 }
 
 
-template <BASE_QUANTITIES_DEFAULT_DECLARATION>
+template <BASE_QUANTITIES_DECLARATION>
 class DefaultQuantityFormat {
 	static void print_power(std::ostringstream& stream, int i) {
 		std::ostringstream power_stream;
@@ -292,7 +283,7 @@ public:
 
 #define POW_TYPE(T1, T2) decltype(std::pow(std::declval<T1>(), std::declval<T2>()))
 
-template <BASE_QUANTITIES_DEFAULT_DECLARATION,
+template <BASE_QUANTITIES_DECLARATION,
 	  class Number = long double,
 	  class Format = DefaultQuantityFormat<BASE_QUANTITIES>>
 class Quantity {
