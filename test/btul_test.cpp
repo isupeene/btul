@@ -23,7 +23,6 @@ SOFTWARE. */
 #include <gtest/gtest.h>
 #include <btul.h>
 #include <BaseTestCases.h>
-#include <ostream>
 
 
 typedef OutputStreamTest HelloTest;

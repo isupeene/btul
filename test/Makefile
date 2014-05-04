@@ -80,3 +80,6 @@ btul_test.o : $(TEST_DIR)/btul_test.cpp \
 bin/btul_test : btul_test.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
+test : all
+	for t in $(TESTS) ; do $$t ; done
+
