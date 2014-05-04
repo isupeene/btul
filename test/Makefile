@@ -41,8 +41,10 @@ TEST_HEADERS = $(TEST_DIR)/*.h
 
 # House-keeping build targets.
 
+.PHONY: all
 all : $(TESTS)
 
+.PHONY: clean
 clean :
 	rm -f $(TESTS) gtest.a gtest_main.a *.o
 
@@ -80,6 +82,7 @@ btul_test.o : $(TEST_DIR)/btul_test.cpp \
 bin/btul_test : btul_test.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@
 
+.PHONY: test
 test : all
 	for t in $(TESTS) ; do $$t ; done
 
