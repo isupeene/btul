@@ -18,13 +18,13 @@ Source
 
 This is the heart and soul of btul.  If you change it, be sure to do the following:
 
-*Adhere to the style of the surrounding code.
-*Make sure all the tests still pass.
-*If you are fixing a bug, add a test in the appropriate test directory that fails before your change, and passes afterwards.
-*If you are adding a feature, again, add a test in the appropriate test directory.
-*If you are improving performance, either add a test in the benchmarking directory that your change improves significantly, or demonstrate that your change significantly improves the performance of an existing test case.
-*If you are reducing the size of binaries using btul, either add a test in the code analysis directory that your change improves significantly, or demonstrate that your change significantly reduces the size of an existing test case.
-*If you add a test, follow the more detailed guidelines in this document.
+* Adhere to the style of the surrounding code.
+* Make sure all the tests still pass, and performance and code analysis tests are not negatively impacted.
+* If you are fixing a bug, add a test in the appropriate test directory that fails before your change, and passes afterwards.
+* If you are adding a feature, again, add a test in the appropriate test directory.
+* If you are improving performance, either add a test in the benchmarking directory that your change improves significantly, or demonstrate that your change significantly improves the performance of an existing test case.
+* If you are reducing the size of binaries using btul, either add a test in the code analysis directory that your change improves significantly, or demonstrate that your change significantly reduces the size of an existing test case.
+* If you need to add a test, follow the more detailed guidelines for the specific type of test you're adding.
 
 
 Test
@@ -36,7 +36,8 @@ We use gtest to test the behaviour of btul.  Related test cases should all be in
 FAQ
 ---
 
-_Q: What's with the wierd notation for exponents?_
+__Q: What's with the wierd notation for exponents?__
+
 A: Realistic exponents are an interesting problem in C++ for the following reason:  If you have a piece of paper in front of you, and you write 1 km^2, you know that this is, in fact, 1,000,000 m^2.  In this case, grouping doesn't matter, and we can equivalently write (1 km)^2.  In C++, we could (hypothetically) represent this as 1_km^2.<sup>1</sup>  Or, we could represent this as (1_km)^2, and get the same result.
 
 Now suppose you take your piece of paper and write 10 km^2.  This is the equivalent of 10,000,000 m^2.  But if you were to write (10 km)^2, you would expect this to yield 100,000,000 m^2.  But in C++, both of these results will yield 100,000,000 m^2.  That
@@ -47,4 +48,6 @@ So we really can't achieve our goal of accurately representing both 10 km^2 and 
 Now, you may be thinking "But this doesn't satisfy the non-interchangeability constraint, because I could just write 10_km.p2() and get a the 'wrong' answer."  Well, turns out you can't, due to some arcane rules in the C++ standard that most ordinary humans never need to concern themselves with.  Turns out that according to the standard, the entirety of 10_km.p2 matches the definition of a _pp-number_.  Which means that that whole thing is passed as a single token to the parser,which _correctly_ tries to look up _km.p2 as the UDL suffix, and of course fails.  This means that the approach used in btul gives us two completely orthoganal ways of expressing exponents, and each one does exactly what you want it to do.
 
 As for complaints about how _p2 and .p2() are ugly ways of expressing exponents, you are correct, and as soon as there's a nicer way to express them, we'll jump right on it!
+
+<sup><sup>1</sup>This is just an example of course, as there are obvious precedence issues with using operator ^ for exponents.</sup>
 
