@@ -276,7 +276,7 @@ public:
 
 	template <class T, class F>
 	constexpr Quantity& operator =(Quantity<BASE_QUANTITIES_1, T, F> other) {
-		this->value = other.value;
+		this->value = other.Value();
 		return *this;
 	}
 
@@ -315,9 +315,11 @@ public:
 	constexpr bool Within(T1 epsilon,
 			      const Quantity<BASE_QUANTITIES_1, T2, F>& other) const
 	{
-		return (this->value < other.value && this->value + epsilon >= other.value) ||
-		       (other.value < this->value && other.value + epsilon >= this->value) ||
-			this->value == other.value;
+		return (this->Value() == other.Value()) ||
+		       (this->Value() < other.Value() &&
+			this->Value() + epsilon >= other.Value()) ||
+		       (other.Value() < this->Value() &&
+			other.Value() + epsilon >= this->Value());
 	}
 
 	constexpr Number Value() const {
@@ -339,8 +341,6 @@ protected:
 	Number value;
 
 private:
-	template <BASE_QUANTITIES_DECLARATION, class T, class F> friend class Quantity;
-
 	template <BASE_QUANTITIES_DECLARATION,
 		  class T1, class F1,
 		  class T2, class F2>

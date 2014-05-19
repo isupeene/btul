@@ -13,6 +13,7 @@ Roadmap:
 * Add gtest.h and provide reasonable test cases for existing code.
 * Add benchmarking code to compare computations with physical units to computations with raw doubles/long doubles.
 * Separation of concerns - move code into multiple header files / namespaces.
+* Safe comparison operators.  Change comparison operator overloads to do a comparison based on an acceptable error level in ULPs.
 * Improve flexibility of output formatting - make unit declarations templated typedefs with a default value for the formatting class, rather than a complete specification of all type arguments.
 * Improve coverage of SI units.
 * Add separate namespaces for imperial and other unit systems, and populate with the appropriate units.
