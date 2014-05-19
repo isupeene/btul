@@ -17,5 +17,6 @@ Roadmap:
 * Improve coverage of SI units.
 * Add separate namespaces for imperial and other unit systems, and populate with the appropriate units.
 * Improve flexibility of output formatting - determine what a sensible set of rules would be for determining when to use multiplier prefixes, and create a simple system for specifying custom rules.
+* Improve math support.  Create overloads of standard math functions that work on quantities.
 * Input - allow any quantity to be read in from a stream of text which could be reasonably inferred to represent that quantity.
 * Wait for a new c++ standard that gives us a better way to represent exponents, as this is the only wart in an otherwise lovely syntax.

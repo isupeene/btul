@@ -307,11 +307,20 @@ public:
 	#undef DECLARE_POWER
 
 	template <class NewFormat>
-	constexpr Quantity<BASE_QUANTITIES_1, Number, NewFormat> withFormat() {
+	constexpr Quantity<BASE_QUANTITIES_1, Number, NewFormat> withFormat() const {
 		return Quantity<BASE_QUANTITIES_1, Number, NewFormat>(value);
 	}
 
-	constexpr Number Value() {
+	template <class T1, class T2, class F>
+	constexpr bool Within(T1 epsilon,
+			      const Quantity<BASE_QUANTITIES_1, T2, F>& other) const
+	{
+		return (this->value < other.value && this->value + epsilon >= other.value) ||
+		       (other.value < this->value && other.value + epsilon >= this->value) ||
+			this->value == other.value;
+	}
+
+	constexpr Number Value() const {
 		return value;
 	}
 
@@ -330,6 +339,8 @@ protected:
 	Number value;
 
 private:
+	template <BASE_QUANTITIES_DECLARATION, class T, class F> friend class Quantity;
+
 	template <BASE_QUANTITIES_DECLARATION,
 		  class T1, class F1,
 		  class T2, class F2>
@@ -636,6 +647,7 @@ public:											\
 	}										\
 };											\
 typedef decltype((VALUE).withFormat<QUANTITY##Format>()) QUANTITY;			\
+
 
 typedef Quantity<1, 0, 0, 0, 0, 0, 0> Length;
 DECLARE_BASE_QUANTITY(Length, m, 1.0L);
