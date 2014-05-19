@@ -93,6 +93,15 @@ SOFTWARE. */
 	Amount##N * VALUE,		\
 	Luminosity##N * VALUE
 
+#define BASE_QUANTITIES_UNARY_OP(OP)	\
+	OP Length,			\
+	OP Mass,			\
+	OP Time,			\
+	OP Current,			\
+	OP Temperature,			\
+	OP Amount,			\
+	OP Luminosity
+
 #define BASE_QUANTITIES_1_MUL(VALUE) BASE_QUANTITIES_N_MUL(1, VALUE)
 
 namespace detail {
@@ -274,15 +283,25 @@ public:
 		: value(other.Value())
 	{}
 
+
+	// We use some cheap tricks with the comma operator here, and later on,
+	// since C++11 only supports single statements as constexpr function bodies.
+
 	template <class T, class F>
 	constexpr Quantity& operator =(Quantity<BASE_QUANTITIES_1, T, F> other) {
-		this->value = other.Value();
-		return *this;
+		return (this->value = other.Value(), *this);
 	}
 
 	#define DECLARE_POWER(N)						\
-	constexpr Quantity<BASE_QUANTITIES_1_MUL(N), Number, Format> p##N() {	\
-		return Quantity<BASE_QUANTITIES_1_MUL(N), Number, Format>(	\
+	constexpr Quantity<BASE_QUANTITIES_1_MUL(N),				\
+			   Number,						\
+			   DefaultQuantityFormat<BASE_QUANTITIES_1_MUL(N)>>	\
+		 p##N()								\
+	{									\
+		return Quantity<BASE_QUANTITIES_1_MUL(N),			\
+				Number,						\
+				DefaultQuantityFormat<BASE_QUANTITIES_1_MUL(N)>>\
+		(								\
 			std::pow(value, N)					\
 		);								\
 	}									\
@@ -398,9 +417,6 @@ private:
 	);
 };
 
-// We use some cheap tricks with the comma operator here, since C++11
-// only supports single statements as constexpr function bodies.
-
 #define DECLARE_ADDITIVE_QUANTITY_OPERATOR(OP)					\
 template <BASE_QUANTITIES_DECLARATION,						\
 	  class T1, class F1,							\
@@ -443,6 +459,17 @@ operator OP(const Quantity<BASE_QUANTITIES, T1, F>& x, const T2& y) {			\
 	return Quantity<BASE_QUANTITIES, OP_RESULT_TYPE(T1, OP, T2), F>(		\
 		x.Value() OP y								\
 	);										\
+}											\
+											\
+template <BASE_QUANTITIES_DECLARATION, class T1, class F, class T2>			\
+constexpr Quantity<BASE_QUANTITIES_UNARY_OP(UNIT_OP), OP_RESULT_TYPE(T2, OP, T1), F>	\
+operator OP(const T2& x, const Quantity<BASE_QUANTITIES, T1, F>& y) {			\
+	return Quantity<BASE_QUANTITIES_UNARY_OP(UNIT_OP),				\
+			OP_RESULT_TYPE(T2, OP, T1),					\
+			F>								\
+	       (									\
+			x OP y.Value()							\
+	       );									\
 }											\
 											\
 template <BASE_QUANTITIES_DECLARATION, class T1, class F, class T2>			\
@@ -674,6 +701,7 @@ DECLARE_BASE_QUANTITY(Luminosity, cd, 1.0L);
 DECLARE_DERIVED_QUANTITY(Force, N, kg*m/s_p2);
 DECLARE_DERIVED_QUANTITY(Energy, J, N*m);
 DECLARE_DERIVED_QUANTITY(Frequency, Hz, s_n1);
+DECLARE_DERIVED_QUANTITY(Angle, rad, m/m);
 
 DECLARE_DERIVED_QUANTITY_NO_SYMBOL(Area, m_p2);
 DECLARE_DERIVED_QUANTITY_NO_SYMBOL(Volume, m_p3);

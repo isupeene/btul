@@ -36,13 +36,13 @@ constexpr long double eps = 1.0 * std::pow(10, -18);
 
 #define EXPECT_WITHIN(v1, v2, epsilon)			\
 	EXPECT_TRUE((v1).Within(epsilon, v2)) <<	\
-		"Value " << v1 << " is not " <<		\
-		"within " << epsilon << " of " << v2
+		"Value " << v2 << " is not " <<		\
+		"within " << epsilon << " of " << v1
 
 #define ASSERT_WITHIN(v1, v2, epsilon)			\
 	ASSERT_TRUE((v1).Within(epsilon, v2)) <<	\
-		"Value " << v1 << " is not " <<		\
-		"within " << epsilon << " of " << v2
+		"Value " << v2 << " is not " <<		\
+		"within " << epsilon << " of " << v1
 
 TEST(ValueTests, test00_fundamentalQuantities) {
 	double expected = 10.0;
@@ -128,7 +128,6 @@ TEST(ValueTest, test01_multipliers) {
 	EXPECT_EQ(pow(10, -12), (1_pm).Value());
 }
 
-// TODO Test both orders of multiplication and division.
 TEST(ValueTest, test02_binaryArithmeticOperators) {
 	EXPECT_WITHIN(2_m, m + m, eps);
 
@@ -136,9 +135,12 @@ TEST(ValueTest, test02_binaryArithmeticOperators) {
 
 	EXPECT_WITHIN(5_m, m * 5, eps);
 	EXPECT_WITHIN(4_m_p2, 2_m * 2_m, eps);
+	EXPECT_WITHIN(10_m, 2 * 5_m, eps);
+	
 
-	EXPECT_WITHIN(m, 5_m / 5, eps);
-	EXPECT_WITHIN(2_m, 4_m_p2 / 2_m, eps);
+	EXPECT_WITHIN(s, 5_s / 5, eps);
+	EXPECT_WITHIN(2_s, 4_s_p2 / 2_s, eps);
+	EXPECT_WITHIN(5_Hz, 10 / 2_s, eps);
 }
 
 TEST(ValueTest, test03_arithmeticAssignmentOperators) {
