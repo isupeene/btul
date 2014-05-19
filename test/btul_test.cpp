@@ -29,6 +29,7 @@ SOFTWARE. */
 
 using namespace std;
 
+// Kind of arbitrary epsilon.
 constexpr long double eps = 1.0 * std::pow(10, -18);
 
 // Like EXPECT_NEAR and ASSERT_NEAR, except these functions

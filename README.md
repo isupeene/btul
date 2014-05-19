@@ -10,7 +10,6 @@ THIS IS NOT A GENERIC UNIT FRAMEWORK!!!  It is a framework for representing phys
 Note also that this library makes use of the user-defined literals feature of c++11, in addition to various other new features.  Keep in mind that not all compilers may support this, and you may need to set certain compiler variables in order to use the latest standard.
 
 Roadmap:
-* Add gtest.h and provide reasonable test cases for existing code.
 * Add benchmarking code to compare computations with physical units to computations with raw doubles/long doubles.
 * Separation of concerns - move code into multiple header files / namespaces.
 * Safe comparison operators.  Change comparison operator overloads to do a comparison based on an acceptable error level in ULPs.
